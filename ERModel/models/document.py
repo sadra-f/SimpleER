@@ -4,4 +4,4 @@ class Document:
         self.string = string
         self.emotion = emotion
         self.id = Document._id
-        Document.id += 1
+        Document._id += 1
