@@ -7,7 +7,7 @@ class Reader:
         pass
 
 
-    def read_dataset(path):
+    def read_dataset(path=None):
         res = []
         try:
             with open(path) as file:
@@ -15,6 +15,7 @@ class Reader:
                     splitted = re.split(';', line)
                     res.append(Doc(splitted[0], splitted[1]))
         except Exception as e:
-            print(f"Exception : {e.with_traceback()}")
-            
+            print(f"Exception : {e}")
+
         return res
+    
