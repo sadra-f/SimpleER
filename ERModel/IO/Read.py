@@ -7,12 +7,12 @@ class Reader:
         pass
 
 
-    def read_dataset(path=None):
+    def read_dataset(path=None, delimiter=';'):
         res = []
         try:
             with open(path) as file:
                 for line in file:
-                    splitted = re.split(';', line)
+                    splitted = re.split(delimiter, line)
                     res.append(Doc(splitted[0], splitted[1]))
         except Exception as e:
             print(f"Exception : {e}")
