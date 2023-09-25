@@ -5,3 +5,7 @@ class Document:
         self.emotion = emotion
         self.id = Document._id
         Document._id += 1
+    
+
+    def __str__(self) -> str:
+        return f"{self.string[0:len(self.string)%11]} - ({self.emotion})"
