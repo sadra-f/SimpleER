@@ -13,7 +13,7 @@ class Reader:
             with open(path) as file:
                 for line in file:
                     splitted = re.split(delimiter, line)
-                    res.append(Doc(splitted[0], splitted[1]))
+                    res.append(Doc(splitted[0], splitted[1].strip()))
         except Exception as e:
             print(f"Exception : {e}")
 
