@@ -8,7 +8,7 @@ class ERM:
         self.dataset_path = dataset_path
         self.dataset = Reader.read_dataset(self.dataset_path)
         self.emotion_set = None
-        self.seperated_tfidf = None
+        self.tfidf = None
         return
 
 
@@ -35,6 +35,5 @@ class ERM:
         self.dataset = tmp
 
     def _seperatly_calc_tfidf(self):
-        self.seperated_tfidf = dict([(emo, None) for emo in self.emotion_set])
-        for emo in self.emotion_set:
-            self.seperated_tfidf[emo] = TFIDF(self.dataset[emo])
+        self.tfidf = TFIDF([" ".join([val.string for val in self.dataset[emo]]) for emo in self.emotion_set])
+        return
