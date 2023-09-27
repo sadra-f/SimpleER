@@ -1,6 +1,6 @@
 from ERModel.ERModel import ERM
-from ERModel.statics.Config import TEST_DATASET_PATH
+from ERModel.statics.Config import *
 
 
 
-ERM(TEST_DATASET_PATH)
+ERM(TRAIN_DATASET_PATH).process()
