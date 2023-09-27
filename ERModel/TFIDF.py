@@ -7,12 +7,12 @@ from math import log10
 class TFIDF:
     def __init__(self, docs:list[Doc]) -> None:
         self._docs = docs
-        self.documents = None
+        self.documents = docs
         self.terms = None
-        self.tf = None
+        self._tf = None
         self.idf = None
         self.tfidf = None
-        self._extract_documents()
+        # self._extract_documents()
         self._extract_terms()
         self.calculate_tf()
         self.calculate_idf()
@@ -24,6 +24,7 @@ class TFIDF:
             self.documents.append(value.string)
         return
 
+
     def _extract_terms(self):
         self.terms = set()
         for doc in self.documents:
@@ -33,29 +34,31 @@ class TFIDF:
         self.terms = list(self.terms)
         return
 
-
-
+    
     def calculate_tf(self):
         #tf -> term\document
-        self.tf = np.ndarray((len(self.terms), len(self.documents)), np.float64)
+        self._tf = np.ndarray((len(self.terms), len(self.documents)), np.float64)
         for i, trm in enumerate(self.terms):
             for j, doc in enumerate(self.documents):
-                self.tf[i][j] = doc.count(trm)
-        self.tf = np.add(1,self.tf, where=self.tf!=0)
-        self.tf = np.log10(self.tf, where=self.tf!=0)
+                self._tf[i][j] = len(re.findall(f" {trm} ", doc))
+        self.tf = np.add(self._tf, np.ones_like(self._tf))
+        self.tf = np.log10(self.tf)
+        # self.tf = np.add(self.tf, np.ones_like(self.tf), where=self.tf!=0)
+        self.tf[self.tf != 0] += 1
         return
 
 
 
     def calculate_idf(self):
-        self.idf = np.sum(self.tf, 0)
+        self.idf = np.sum(np.ones_like(self._tf), 1, where=self._tf > 0)
         self.idf = np.divide(len(self.documents), self.idf)
         self.idf = np.log10(self.idf)
+        self.idf = np.reshape(self.idf, (len(self.idf), 1))
         return
         
         
 
 
     def calculate_tfidf(self):
-        self.tfidf = np.multiply(self.tf, self.idf)
+        self.tfidf = np.multiply(self._tf, self.idf)
         return
