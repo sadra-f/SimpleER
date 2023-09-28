@@ -4,19 +4,20 @@ from .TFIDF import TFIDF
 import numpy as np
 
 class ERM:
-    def __init__(self, dataset_path):
-        self.dataset_path = dataset_path
-        self.dataset = Reader.read_dataset(self.dataset_path)
+    def __init__(self, train_dataset_path):
+        self.TRAIN_DATASET_PATH = train_dataset_path
+        self.dataset = None
         self.emotion_set = None
         self.tfidf = None
         return
 
 
     def train(self):
+        self.dataset = Reader.read_dataset(self.TRAIN_DATASET_PATH)
         self._build_emotion_set()
         self._seperate_by_emotion()
         self._seperatly_calc_tfidf()
-        return
+        return self
 
 
     def _build_emotion_set(self):
@@ -38,5 +39,5 @@ class ERM:
         self.tfidf = TFIDF([" ".join([val.string for val in self.dataset[emo]]) for emo in self.emotion_set])
         return
     
-
-
+    def _predict_cosine_sim(self, doc):
+        return self.tfidf.compare(doc)
