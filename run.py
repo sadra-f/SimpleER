@@ -3,4 +3,6 @@ from ERModel.statics.Config import *
 
 
 
-ERM(TRAIN_DATASET_PATH).train()
+m = ERM(TRAIN_DATASET_PATH).train()
+
+m._predict_cosine_sim("i feel really sad")
