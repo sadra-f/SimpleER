@@ -13,7 +13,7 @@ class TFIDF:
         self.idf = None
         self.tfidf = None
         # self._extract_documents()
-        self._extract_terms()
+        self.terms = self._extract_terms(self.documents)
         self.calculate_tf()
         self.calculate_idf()
         self.calculate_tfidf()
@@ -25,14 +25,14 @@ class TFIDF:
         return
 
 
-    def _extract_terms(self):
-        self.terms = set()
-        for doc in self.documents:
+    def _extract_terms(self, documents):
+        terms = set()
+        for doc in documents:
             for term in re.split(' ', doc):
-                self.terms.add(term)
-        self.terms.difference_update(STOP_WORDS)
-        self.terms = list(self.terms)
-        return
+                terms.add(term)
+        terms.difference_update(STOP_WORDS)
+        terms = list(terms)
+        return terms
 
     
     def calculate_tf(self):
@@ -62,3 +62,7 @@ class TFIDF:
     def calculate_tfidf(self):
         self.tfidf = np.multiply(self._tf, self.idf)
         return
+    
+
+    def compare(self, doc):
+        pass
