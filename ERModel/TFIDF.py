@@ -25,7 +25,7 @@ class TFIDF:
         return
 
 
-    def _extract_terms(self, documents):
+    def _extract_terms(self, documents:list[str]):
         terms = set()
         for doc in documents:
             for term in re.split(' ', doc):
@@ -64,5 +64,13 @@ class TFIDF:
         return
     
 
-    def compare(self, doc):
-        pass
+    def compare(self, doc:str):
+        new_doc_terms = self._extract_terms([doc])
+        new_doc_term_index = [i for i, trm in enumerate(self.terms) if trm in new_doc_terms]
+        result = np.zeros((1, len(self.documents)))
+        for i in new_doc_term_index:
+            for j, doc in enumerate(self.documents):
+                result[0][j] += self.tfidf[i][j]
+        
+        return result
+
