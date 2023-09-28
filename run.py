@@ -3,4 +3,4 @@ from ERModel.statics.Config import *
 
 
 
-ERM(TRAIN_DATASET_PATH).process()
+ERM(TRAIN_DATASET_PATH).train()

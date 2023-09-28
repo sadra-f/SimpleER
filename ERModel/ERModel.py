@@ -12,7 +12,7 @@ class ERM:
         return
 
 
-    def process(self):
+    def train(self):
         self._build_emotion_set()
         self._seperate_by_emotion()
         self._seperatly_calc_tfidf()
@@ -37,3 +37,6 @@ class ERM:
     def _seperatly_calc_tfidf(self):
         self.tfidf = TFIDF([" ".join([val.string for val in self.dataset[emo]]) for emo in self.emotion_set])
         return
+    
+
+
