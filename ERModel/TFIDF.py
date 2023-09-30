@@ -26,7 +26,7 @@ class TFIDF:
         return
 
 
-    def _extract_terms(self, documents:list[str]):
+    def _extract_terms(documents:list[str]):
         terms = set()
         for doc in documents:
             for term in re.split(' ', doc):
