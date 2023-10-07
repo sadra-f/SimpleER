@@ -1,4 +1,5 @@
 from .models.document import Document as Doc
+from .NaiveBayes import NaiveBayes as NB
 from .IO.Read import Reader
 from .TFIDF import TFIDF
 import numpy as np
@@ -41,3 +42,6 @@ class ERM:
     
     def _predict_cosine_sim(self, doc):
         return self.tfidf.compare(doc)
+    
+    def _build_naive_bayes_model(self):
+        nb_model = NB()
