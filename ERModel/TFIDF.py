@@ -14,7 +14,7 @@ class TFIDF:
         self.idf = None
         self.tfidf = None
         # self._extract_documents()
-        self.terms = self._extract_terms(self.documents)
+        self.terms = TFIDF._extract_terms(self.documents)
         self.calculate_tf()
         self.calculate_idf()
         self.calculate_tfidf()
@@ -66,7 +66,7 @@ class TFIDF:
     
 
     def compare(self, new_doc:str):
-        new_doc_terms = self._extract_terms([new_doc])
+        new_doc_terms = TFIDF._extract_terms([new_doc])
         new_doc_tf = np.zeros((len(self.terms)))
         for i, trm in enumerate(new_doc_terms):
             new_doc_tf[self.terms.index(trm)] = new_doc.count(trm)
