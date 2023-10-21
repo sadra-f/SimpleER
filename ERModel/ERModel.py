@@ -5,19 +5,20 @@ from .TFIDF import TFIDF
 import numpy as np
 
 class ERM:
-    def __init__(self, train_dataset_path):
-        self.TRAIN_DATASET_PATH = train_dataset_path
+    def __init__(self):
         self.dataset = None
         self.emotion_set = None
-        self.tfidf = None
+        self.tfidf = TFIDF()
+        self.nb_model = NB()
         return
 
 
-    def train(self):
-        self.dataset = Reader.read_dataset(self.TRAIN_DATASET_PATH)
+    def train(self, train_dataset_path):
+        self.dataset = Reader.read_dataset(train_dataset_path)
         self._build_emotion_set()
         self._seperate_by_emotion()
-        self._seperatly_calc_tfidf()
+        self._build_TFIDF_model()
+        self._build_NB_model()
         return self
 
 
@@ -36,12 +37,16 @@ class ERM:
                     tmp[val].append(doc)
         self.dataset = tmp
 
-    def _seperatly_calc_tfidf(self):
-        self.tfidf = TFIDF([" ".join([val.string for val in self.dataset[emo]]) for emo in self.emotion_set])
+    def _build_TFIDF_model(self):
+        self.tfidf.train([" ".join([val.string for val in self.dataset[emo]]) for emo in self.emotion_set])
         return
     
-    def _predict_cosine_sim(self, doc):
+    def _predict_TFIDF(self, doc):
         return self.tfidf.compare(doc)
     
-    def _build_naive_bayes_model(self):
-        nb_model = NB()
+    def _build_NB_model(self):
+        self.nb_model.train(self.dataset)
+
+
+    def _predict_NB(self, text):
+        return self.nb_model.predict(text)
