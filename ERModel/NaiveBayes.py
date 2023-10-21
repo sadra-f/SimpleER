@@ -1,4 +1,4 @@
-from statics.Stopwords import STOP_WORDS
+from ERModel.statics.Stopwords import STOP_WORDS
 import numpy as np
 import re
 
