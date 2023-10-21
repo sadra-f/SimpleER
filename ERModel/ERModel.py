@@ -40,7 +40,8 @@ class ERM:
         self.dataset = tmp
 
     def _build_TFIDF_model(self):
-        self.tfidf.train([" ".join([val.string for val in self.dataset[emo]]) for emo in self.emotion_set])
+        # self.tfidf.train([" ".join([val.string for val in self.dataset[emo]]) for emo in self.emotion_set])
+        self.tfidf.train(self.dataset)
         return
     
     def _predict_TFIDF(self, doc):
