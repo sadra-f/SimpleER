@@ -6,13 +6,17 @@ from math import log10
 from .CosineSimilarity import cosine_similarity
 
 class TFIDF:
-    def __init__(self, docs:list[Doc]) -> None:
-        self._docs = docs
-        self.documents = docs
+    def __init__(self):
+        self._docs = None
+        self.documents = None
         self.terms = None
         self._tf = None
         self.idf = None
         self.tfidf = None
+
+    def train(self, docs:list[Doc]):
+        self._docs = docs
+        self.documents = docs
         # self._extract_documents()
         self.terms = TFIDF._extract_terms(self.documents)
         self.calculate_tf()
