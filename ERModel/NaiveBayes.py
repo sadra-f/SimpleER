@@ -1,34 +1,43 @@
 from .TFIDF import TFIDF
 import numpy as np
-from models.document import Document
 
 class NaiveBayes:
 
-    def __init__(self, doc_dict:dict):
-
-        self.classes = list(doc_dict.keys())
-        self.documents = list(doc_dict.values())
-        self.terms = TFIDF._extract_terms(self.documents)
-
-        self.term_document = np.full((len(self.documents), len(self.terms)), False, dtype=bool)
-        for i, doc in enumerate(self.documents):
-            for j, trm in enumerate(self.terms):
-                self.term_document[i][j] = trm in doc
-
-        self.class_prob = np.zeros((len(self.classes,2)))
-        for i, value in enumerate(self.classes):
-            self.class_prob[i][0] = value
-            self.class_prob[i][1] = len(doc_dict[value]) / len(self.documents)
-
-
-    
-
-    def predict(self, text):
-        results = np.zeros((len(self.classes),2))
-        new_terms = TFIDF._extract_terms([text])
-        for i, value in enumerate(self.classes):
-            self.class_prob[i][0] = value
-            prob = 0
-            
-
+    def __init__(self):
+        self.classes = None
+        self.documents = None
+        self.terms = None
+        self._ref = None
+        self.class_prob = None
+        self.prob_dict = None
         
+
+    def train(self, doc_dict:dict):
+        self.classes = list(doc_dict.keys())
+        self.documents = list(np.concatenate([*doc_dict.values()]))
+        self.terms = TFIDF._extract_terms([val.string for val in self.documents])
+
+        self._ref = dict()
+        for class_name in self.classes:
+            self._ref[class_name] = None
+        
+        self.class_prob = self._ref.copy()
+        self.prob_dict = self._ref.copy()
+
+        for class_name in self.classes:
+            self.class_prob[class_name] = len(doc_dict[class_name]) / len(self.documents)
+            self.prob_dict[class_name] = np.ones((len(self.terms,)))
+            _sent_joined = ' '.join([val.string for val in doc_dict[class_name]])
+            for i, term in enumerate(self.terms):
+                self.prob_dict[class_name][i] += _sent_joined.count(f' {term} ')
+            self.prob_dict[class_name] = np.divide(self.prob_dict[class_name], np.sum(self.prob_dict[class_name], 0))
+
+    def predict(self, test):
+        results = self._ref.copy()
+        test_terms = TFIDF._extract_terms([test])
+        for class_name in self.classes:
+            results[class_name] = self.class_prob[class_name]
+            for new_term in test_terms:
+                results[class_name] *= self.prob_dict[class_name][self.terms.index(new_term)]
+        
+        return results
