@@ -1,15 +1,17 @@
+from ERModel.statics.Config import  PICKLED_NAIVE_BAYES_PATH, PICKLED_TFIDF_PATH
 from .models.document import Document as Doc
 from .NaiveBayes import NaiveBayes as NB
 from .IO.Read import Reader
 from .TFIDF import TFIDF
 import numpy as np
+import pickle
 
 class ERM:
     def __init__(self):
         self.dataset = None
         self.emotion_set = None
         self.tfidf = TFIDF()
-        self.nb_model = NB()
+        self.naive_bayes = NB()
         return
 
 
@@ -45,8 +47,21 @@ class ERM:
         return self.tfidf.compare(doc)
     
     def _build_NB_model(self):
-        self.nb_model.train(self.dataset)
+        self.naive_bayes.train(self.dataset)
 
 
     def _predict_NB(self, text):
-        return self.nb_model.predict(text)
+        return self.naive_bayes.predict(text)
+    
+
+    def save_model(self):
+        with open(PICKLED_TFIDF_PATH, 'wb') as file:
+            pickle.dump(self.tfidf, file)
+        with open(PICKLED_NAIVE_BAYES_PATH, 'wb') as file:
+            pickle.dump(self.naive_bayes, file)
+
+    def load_model(self):
+        with open(PICKLED_TFIDF_PATH, 'rb') as file:
+            self.tfidf = pickle.load(file)
+        with open(PICKLED_NAIVE_BAYES_PATH, 'rb') as file:
+           self.naive_bayes = pickle.load(file)
