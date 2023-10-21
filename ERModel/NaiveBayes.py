@@ -1,5 +1,6 @@
-from .TFIDF import TFIDF
+from statics.Stopwords import STOP_WORDS
 import numpy as np
+import re
 
 class NaiveBayes:
 
@@ -15,7 +16,7 @@ class NaiveBayes:
     def train(self, doc_dict:dict):
         self.classes = list(doc_dict.keys())
         self.documents = list(np.concatenate([*doc_dict.values()]))
-        self.terms = TFIDF._extract_terms([val.string for val in self.documents])
+        self.terms = NaiveBayes._extract_terms([val.string for val in self.documents])
 
         self._ref = dict()
         for class_name in self.classes:
@@ -34,10 +35,19 @@ class NaiveBayes:
 
     def predict(self, test):
         results = self._ref.copy()
-        test_terms = TFIDF._extract_terms([test])
+        test_terms = NaiveBayes._extract_terms([test])
         for class_name in self.classes:
             results[class_name] = self.class_prob[class_name]
             for new_term in test_terms:
                 results[class_name] *= self.prob_dict[class_name][self.terms.index(new_term)]
         
         return results
+    
+    def _extract_terms(documents:list[str]):
+        terms = set()
+        for doc in documents:
+            for term in re.split(' ', doc):
+                terms.add(term)
+        terms.difference_update(STOP_WORDS)
+        terms = list(terms)
+        return terms
