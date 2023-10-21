@@ -13,10 +13,15 @@ class TFIDF:
         self._tf = None
         self.idf = None
         self.tfidf = None
+        self._ref_res = None
 
-    def train(self, docs:list[Doc]):
-        self._docs = docs
-        self.documents = docs
+    def train(self, docs:dict):
+        self._ref_res = dict()
+        for class_name in docs:
+            self._ref_res[class_name] = None
+        self.classes = list(docs.keys())
+        self._docs = [' '.join([value.string for value in docs[class_name]]) for class_name in self.classes]
+        self.documents = self._docs.copy()
         # self._extract_documents()
         self.terms = TFIDF._extract_terms(self.documents)
         self.calculate_tf()
@@ -73,14 +78,18 @@ class TFIDF:
         new_doc_terms = TFIDF._extract_terms([new_doc])
         new_doc_tf = np.zeros((len(self.terms)))
         for i, trm in enumerate(new_doc_terms):
-            new_doc_tf[self.terms.index(trm)] = new_doc.count(trm)
+            try:
+                new_doc_tf[self.terms.index(trm)] = new_doc.count(f' {trm} ')
+            except:
+                pass
         new_doc_tf = np.add(new_doc_tf, np.ones_like(new_doc_tf))
         new_doc_tf = np.log10(new_doc_tf)
         new_doc_tf[new_doc_tf != 0] += 1
         new_doc_tfidf = np.multiply(new_doc_tf, self.idf)
-        result = np.zeros((1,len(self.documents)))
-        for i, document in enumerate(self.documents):
-            result[0][i] = cosine_similarity(new_doc_tfidf, self.tfidf[:,i])
+        result = self._ref_res.copy()
+        for i, class_name in enumerate(self.classes):
+            _sim = cosine_similarity(new_doc_tfidf, self.tfidf[:,i])
+            result[class_name] = 0 if np.isnan(_sim) else _sim
         
         return result
 
