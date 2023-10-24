@@ -1,4 +1,4 @@
-from ERModel.statics.Config import PICKLED_ER_MODEL_PATH, PICKLED_NAIVE_BAYES_PATH, PICKLED_TFIDF_PATH
+from ERModel.statics.Config import PICKLED_ER_MODEL_PATH, PICKLED_NAIVE_BAYES_PATH, PICKLED_TFIDF_PATH, TFIDF_WEIGHT, NAIVE_BAYES_WEIGHT
 from .models.document import Document as Doc
 from .NaiveBayes import NaiveBayes as NB
 from .IO.Read import Reader
@@ -6,14 +6,13 @@ from .TFIDF import TFIDF
 import numpy as np
 import pickle
 
+
 class ERM:
     def __init__(self):
         self.dataset = None
         self.emotion_set = None
         self.tfidf = TFIDF()
         self.naive_bayes = NB()
-        self.NAIVE_BAYES_WEIGHT = 0.7
-        self.TFIDF_WEIGHT = 1 - self.NAIVE_BAYES_WEIGHT
         return
 
 
@@ -59,18 +58,19 @@ class ERM:
     def save_model(self):
         with open(PICKLED_ER_MODEL_PATH, 'wb') as file:
             pickle.dump(self, file)
-        with open(PICKLED_TFIDF_PATH, 'wb') as file:
-            pickle.dump(self.tfidf, file)
-        with open(PICKLED_NAIVE_BAYES_PATH, 'wb') as file:
-            pickle.dump(self.naive_bayes, file)
+        # with open(PICKLED_TFIDF_PATH, 'wb') as file:
+        #     pickle.dump(self.tfidf, file)
+        # with open(PICKLED_NAIVE_BAYES_PATH, 'wb') as file:
+        #     pickle.dump(self.naive_bayes, file)
 
-    def load_model(self):
+    def load_model():
         with open(PICKLED_ER_MODEL_PATH, 'rb') as file:
-            self = pickle.load(file)
-        with open(PICKLED_TFIDF_PATH, 'rb') as file:
-            self.tfidf = pickle.load(file)
-        with open(PICKLED_NAIVE_BAYES_PATH, 'rb') as file:
-           self.naive_bayes = pickle.load(file)
+            val = pickle.load(file)
+        return val
+        # with open(PICKLED_TFIDF_PATH, 'rb') as file:
+        #     self.tfidf = pickle.load(file)
+        # with open(PICKLED_NAIVE_BAYES_PATH, 'rb') as file:
+        #     self.naive_bayes = pickle.load(file)
 
 
     def predict(self, text):
@@ -82,9 +82,13 @@ class ERM:
         results = dict()
         largest_sim = -1
         for i, emotion in enumerate(self.emotion_set):
-            emo_sim = self.TFIDF_WEIGHT * tfidf[emotion] + self.NAIVE_BAYES_WEIGHT * nb[emotion]
+            emo_sim = TFIDF_WEIGHT * tfidf[emotion] + NAIVE_BAYES_WEIGHT * nb[emotion]
             if emo_sim > largest_sim :
                 largest_sim = emo_sim
                 res = emotion
             results[emotion] = emo_sim
         return (res, results)
+    
+    def _update_weights(self):
+        self.NAIVE_BAYES_WEIGHT += 0.1
+        self.TFIDF_WEIGHT = 1 - self.NAIVE_BAYES_WEIGHT
