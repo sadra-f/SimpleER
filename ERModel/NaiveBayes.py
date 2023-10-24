@@ -39,9 +39,12 @@ class NaiveBayes:
         for class_name in self.classes:
             results[class_name] = self.class_prob[class_name]
             for new_term in test_terms:
-                results[class_name] *= self.prob_dict[class_name][self.terms.index(new_term)]
+                try:
+                    results[class_name] *= self.prob_dict[class_name][self.terms.index(new_term)]
+                except:
+                    pass
         
-        return results
+        return self.min_max_normalizer(results)
     
     def _extract_terms(documents:list[str]):
         terms = set()
@@ -51,3 +54,10 @@ class NaiveBayes:
         terms.difference_update(STOP_WORDS)
         terms = list(terms)
         return terms
+    
+    def min_max_normalizer(self, results:dict, new_min=0, new_max=1):
+        cur_min = min(results.values())
+        cur_max = max(results.values())
+        for key in results.keys():
+            results[key] = ((results[key] - cur_min) / (cur_max - cur_min)) * (new_max - new_min) + new_min
+        return results

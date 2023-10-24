@@ -91,5 +91,14 @@ class TFIDF:
             _sim = cosine_similarity(new_doc_tfidf, self.tfidf[:,i])
             result[class_name] = 0 if np.isnan(_sim) else _sim
         
-        return result
+        return self.min_max_normalizer(result)
 
+    def min_max_normalizer(self, results:dict, new_min=0, new_max=1):
+        cur_min = min(results.values())
+        cur_max = max(results.values())
+        for key in results.keys():
+            try:
+                results[key] = ((results[key] - cur_min) / (cur_max - cur_min)) * (new_max - new_min) + new_min
+            except ZeroDivisionError:
+                results[key] = 0
+        return results
