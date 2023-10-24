@@ -74,6 +74,8 @@ class ERM:
 
 
     def predict(self, text):
+        if text is Doc:
+            text = text.string
         tfidf = self._predict_TFIDF(text)
         nb = self._predict_NB(text)
         res = 'something went wrong'
