@@ -20,7 +20,7 @@ class ERM:
     def train(self, train_dataset_path):
         self.dataset = Reader.read_dataset(train_dataset_path)
         self._build_emotion_set()
-        self._seperate_by_emotion()
+        self.dataset = ERM._seperate_by_emotion(self.emotion_set, self.dataset)
         self._build_TFIDF_model()
         self._build_NB_model()
         return self
@@ -33,16 +33,15 @@ class ERM:
         return
     
 
-    def _seperate_by_emotion(self):
-        tmp = dict([(emo, []) for emo in self.emotion_set])
-        for val in self.emotion_set:
-            for doc in self.dataset:
+    def _seperate_by_emotion(emotion_set, dataset):
+        res = dict([(emo, []) for emo in emotion_set])
+        for val in emotion_set:
+            for doc in dataset:
                 if doc.emotion == val:
-                    tmp[val].append(doc)
-        self.dataset = tmp
+                    res[val].append(doc)
+        return res
 
     def _build_TFIDF_model(self):
-        # self.tfidf.train([" ".join([val.string for val in self.dataset[emo]]) for emo in self.emotion_set])
         self.tfidf.train(self.dataset)
         return
     
