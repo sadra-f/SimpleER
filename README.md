@@ -1,7 +1,7 @@
 # SimpleER
 
 A simple Emotion Recognition model using tfidf & cosine similarity along with naive bayes.
-Ready models are in the repo use the load method in the ERModel class to read them and then test/predict for new text using the predict method.
+Ready Pickled model is in the repo use the load method in the ERModel class to read them and then test/predict for new text using the predict method.
 
 ## Evaluations
 using the evaluator class the latest evaluation results are :
