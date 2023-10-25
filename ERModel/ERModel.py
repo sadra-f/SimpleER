@@ -1,7 +1,7 @@
 from ERModel.statics.Config import PICKLED_ER_MODEL_PATH, TFIDF_WEIGHT, NAIVE_BAYES_WEIGHT
+from .IO.Read import Reader, read_pickled_obj
 from .models.document import Document as Doc
 from .NaiveBayes import NaiveBayes as NB
-from .IO.Read import Reader, read_pickled_obj
 from .IO.Write import write_pickled_obj
 from .TFIDF import TFIDF
 

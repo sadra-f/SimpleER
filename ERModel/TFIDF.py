@@ -1,9 +1,7 @@
-from .models.document import Document as Doc
-import re
+from .CosineSimilarity import cosine_similarity
 from .statics.Stopwords import STOP_WORDS
 import numpy as np
-from math import log10
-from .CosineSimilarity import cosine_similarity
+import re
 
 class TFIDF:
     def __init__(self):

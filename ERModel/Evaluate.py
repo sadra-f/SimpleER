@@ -1,6 +1,5 @@
-from .ERModel import ERM
 from .IO.Read import Reader
-import numpy as np
+from .ERModel import ERM
 
 class Evaluator:
     def __init__(self, ermodel:ERM, testpath=None):
