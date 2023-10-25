@@ -11,7 +11,7 @@ recall:0.7262
 f-score:0.7503
 
 
-### Sample Code
+## Sample Code
 
 #### Train New Model
 ```
@@ -37,3 +37,28 @@ f-score:0.7503
     evals = eval.evaluate()
     print(evals)
 ```
+
+## Dataset
+
+The dataset used is one from kaggle, a dataset for nlp proposes. [link](https://www.kaggle.com/datasets/praveengovi/emotions-dataset-for-nlp)
+
+Other datasets similar in structure can be used to train new models.
+Similar to this structure:
+
+A length of text;class
+Second length of text;class
+
+Where the class is the class/emotion which the text before the semicolon is represented by.
+
+
+## Config file
+
+The config.py file holds the paths to files used such as the log files and the datasets along with the Weight values for tfidf and naive bayes when predicting the outcome of the model the optimum values found for accuracy by experementing was NB=0.4,TFIDF=0.6 and almost similar NB=TFIDF = 0.5
+
+nb:0.2 tfidf:0.8 ==> 0.7885
+nb:0.3 tfidf:0.7 ==> 0.7995
+nb:0.4 tfidf:0.6 ==> 0.823
+nb:0.5 tfidf:0.5 ==> 0.8225
+nb:0.6 tfidf:0.4 ==> 0.8185
+nb:0.7 tfidf:0.3 ==> 0.811
+nb:0.8 tfidf:0.2 ==> 0.8035
