@@ -1,10 +1,9 @@
-from ERModel.statics.Config import PICKLED_ER_MODEL_PATH, PICKLED_NAIVE_BAYES_PATH, PICKLED_TFIDF_PATH, TFIDF_WEIGHT, NAIVE_BAYES_WEIGHT
+from ERModel.statics.Config import PICKLED_ER_MODEL_PATH, TFIDF_WEIGHT, NAIVE_BAYES_WEIGHT
 from .models.document import Document as Doc
 from .NaiveBayes import NaiveBayes as NB
-from .IO.Read import Reader
+from .IO.Read import Reader, read_pickled_obj
+from .IO.Write import write_pickled_obj
 from .TFIDF import TFIDF
-import numpy as np
-import pickle
 
 
 class ERM:
@@ -56,21 +55,10 @@ class ERM:
     
 
     def save_model(self):
-        with open(PICKLED_ER_MODEL_PATH, 'wb') as file:
-            pickle.dump(self, file)
-        # with open(PICKLED_TFIDF_PATH, 'wb') as file:
-        #     pickle.dump(self.tfidf, file)
-        # with open(PICKLED_NAIVE_BAYES_PATH, 'wb') as file:
-        #     pickle.dump(self.naive_bayes, file)
+        write_pickled_obj(PICKLED_ER_MODEL_PATH, self)
 
     def load_model():
-        with open(PICKLED_ER_MODEL_PATH, 'rb') as file:
-            val = pickle.load(file)
-        return val
-        # with open(PICKLED_TFIDF_PATH, 'rb') as file:
-        #     self.tfidf = pickle.load(file)
-        # with open(PICKLED_NAIVE_BAYES_PATH, 'rb') as file:
-        #     self.naive_bayes = pickle.load(file)
+        return read_pickled_obj(PICKLED_ER_MODEL_PATH)
 
 
     def predict(self, text):
