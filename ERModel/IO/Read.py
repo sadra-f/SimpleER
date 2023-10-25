@@ -1,4 +1,5 @@
 from ERModel.models.document import Document as Doc
+import pickle
 import re
 
 
@@ -19,3 +20,8 @@ class Reader:
 
         return res
     
+
+def read_pickled_obj(path):
+    with open(path, 'rb') as file:
+            res = pickle.load(file)
+    return res
