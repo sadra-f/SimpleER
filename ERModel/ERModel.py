@@ -154,7 +154,7 @@ class ERM:
     
     def _update_weights(self):
         """
-            A method used to find the best value for tfidf&naive bayes wheights.
+            A method used to find the best value for tfidf&naive bayes weights.
             Requers change in class to be used.
             It is Not to be used as is.
         """
