@@ -40,7 +40,7 @@ f-score:0.7503
 
 ## Dataset
 
-The dataset used is one from kaggle, a dataset for nlp proposes. [link](https://www.kaggle.com/datasets/praveengovi/emotions-dataset-for-nlp)
+The dataset used is one from kaggle, a dataset for nlp purposes. [link](https://www.kaggle.com/datasets/praveengovi/emotions-dataset-for-nlp)
 
 Other datasets similar in structure can be used to train new models.
 Similar to this structure:
