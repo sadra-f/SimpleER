@@ -46,6 +46,8 @@ Other datasets similar in structure can be used to train new models.
 Similar to this structure:
 
 A length of text;class
+
+
 Second length of text;class
 
 Where the class is the class/emotion which the text before the semicolon is represented by.
