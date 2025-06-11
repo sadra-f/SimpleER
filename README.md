@@ -4,11 +4,10 @@ A simple Emotion Recognition model using tfidf & cosine similarity along with na
 Ready Pickled model is in the repo use the load method in the ERModel class to read them and then test/predict for new text using the predict method.
 
 ## Evaluations
-Using the evaluator class the latest evaluation results are :  
-Accuracy: 0.823  
-Precision: 0.7761  
-Recall: 0.7262  
-F-Score: 0.7503  
+Using the evaluator class the latest evaluation results are :
+|Accuracy|Precision|Recall|F1-Score|
+|-|-|-|-|
+|0.823|0.7761|0.7262|0.7503|
 
 
 ## Sample Code
